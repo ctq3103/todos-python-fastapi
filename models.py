@@ -13,6 +13,8 @@ class Users(Base):
     last_name = Column(String)
     hashed_password = Column(String)
     is_active = Column(Boolean, default=True)
+    is_admin = Column(Boolean, default=False)
+    company_id = Column(Integer, ForeignKey("companies.id"))
 
     todos = relationship("Todos", back_populates="owner")
 
@@ -28,3 +30,12 @@ class Todos(Base):
     owner_id = Column(Integer, ForeignKey("users.id"))
 
     owner = relationship("Users", back_populates="todos")
+
+class Companies(Base):
+    __tablename__ = "companies"
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String, unique=True, index=True)
+    description = Column(String, index=True)
+    mode = Column(String)
+    rating = Column(String)
